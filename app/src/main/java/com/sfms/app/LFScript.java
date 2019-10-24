@@ -21,6 +21,16 @@ public class LFScript {
     }
 
     @JavascriptInterface
+    public void logout(){
+        this.context.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                webview.loadUrl(MainWebClient.LOGIN_URL);
+            }
+        });
+    }
+
+    @JavascriptInterface
     public void doFeedback(final String id) {
         this.context.runOnUiThread(new Runnable() {
             @Override

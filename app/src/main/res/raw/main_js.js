@@ -32,15 +32,25 @@ function renderFeedbackItem(feedback, i) {
 
 function updateProcess(qId, option) {
     return function (e) {
+    var textBox = e.target.parentElement.querySelector('input[type=text]');
         switch (e.target.type) {
             case 'checkbox':
                 if (!conductTracking[qId]) {
                     conductTracking[qId] = {};
                 }
-                //conductTracking[qId][option.id] = e.target.checked;
+                if(textBox){
+                    conductTracking[qId][option.id] = textBox;
+                }else{
+                    conductTracking[qId][option.id] = e.target.checked;
+                }
                 break;
             case 'radio':
-                conductTracking[qId] = option.id;
+                if(textBox){
+                    conductTracking[qId] = {};
+                    conductTracking[qId][option.id] = textBox;
+                }else{
+                    conductTracking[qId] = option.id;
+                }
                 break;
             default:
                 conductTracking[qId] = {};
@@ -66,7 +76,6 @@ function renderChoiseTemplate(template, data, index) {
         cTemp.querySelector('input').name = 'q' + data.id;
         cTemp.querySelector('input').value = option.point;
         if (option.point <= 0) {
-            cTemp.querySelector('span').remove();
             cTemp.querySelector('input[type=text]').name = 'q' + data.id + '-other';
         } else {
             cTemp.querySelector('input[type=text]').remove();
@@ -222,11 +231,19 @@ if (document.getElementById('btn-login')) {
             var username = document.getElementById('username').value;
             var password = document.getElementById('password').value;
             var login  = {
-                username:username,
-                password:password
+                "username":username,
+                "password":password
             };
             if (typeof LG !== 'undefined') {
                 LG.login(JSON.stringify(login));
+            }
+        });
+}
+if (document.getElementById('btn-logout')) {
+    document.getElementById('btn-logout')
+        .addEventListener('click',function(){
+            if (typeof LF !== 'undefined') {
+                LF.logout();
             }
         });
 }
@@ -238,26 +255,21 @@ if (document.getElementById('btn-send-result')) {
             for (var i in conductTracking) {
                 if (typeof conductTracking[i] === 'object') {
                     for (var j in conductTracking[i]) {
-                        if (conductTracking[i][j]) {
+                        if (conductTracking[i][j]==true) {
+                            conductResult.push({
+                                optionnByOptionnId: j
+                            });
+                        }else if(conductTracking[i][j].value){
+                            conductResult.push({
+                                optionnByOptionnId: j,
+                                answerContent: conductTracking[i][j].value
+                            });
+                        }else{
                             conductResult.push({
                                 optionnByOptionnId: j,
                                 answerContent: conductTracking[i][j]
                             });
                         }
-                        /* if (conductTracking[i][j] != null) {
-                             conductResult.push({
-                                 optionnByOptionnId: j,
-                                 answerContent: conductTracking[i][j]
-                             });
-                             console.log(j);
-                             console.log(conductTracking[i][j]);
-                             } else {
-                                 conductResult.push({
-                                     optionnByOptionnId: j
-                                 });
-                                  console.log(j);
-                             }
-                         }*/
                     }
                 } else {
                     conductResult.push({
@@ -274,7 +286,8 @@ if (document.getElementById('btn-send-result')) {
             if (typeof FD !== 'undefined') {
                 FD.save(JSON.stringify(content));
             }
-            console.log(content);
+            console.log(JSON.stringify(content));
+            console.log(JSON.stringify(conductTracking));
 
         });
 }

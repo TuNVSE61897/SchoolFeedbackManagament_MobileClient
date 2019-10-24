@@ -19,14 +19,14 @@ import retrofit2.http.Query;
  */
 
 public interface FeedbackApi {
-    @GET("feedbacks/conduct-mobile")
+    @GET("feedbacks/mobile/conduct-mobile")
     Call<JsonArray> getFeedbacks(@Header("username") String username);
 
-    @GET("feedbacks/conduct-mobile/{id}")
+    @GET("feedbacks/mobile/conduct-mobile/{id}")
     Call<JsonObject> getFeedback(@Header("username") String username, @Path("id") String id);
 
-    @POST("conduct-feedback/save-mobile")
-    Call<JsonObject> saveFeedback(@Header("username") String username, @Body RequestBody feedback);
+    @POST("conduct-feedback/mobile/save-mobile")
+    Call<Void> saveFeedback(@Header("username") String username, @Body RequestBody feedback);
 
     @POST("mobile/login")
     Call<Boolean> login(@Query("username") String username, @Query("password") String password);

@@ -41,10 +41,10 @@ public class FDScript {
     @JavascriptInterface
     public void save(String feedbackJson) {
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), feedbackJson);
-        Call<JsonObject> callback = this.api.saveFeedback(loginInfo.getUsername(), body);
-        callback.enqueue(new Callback<JsonObject>() {
+        Call<Void> callback = this.api.saveFeedback(loginInfo.getUsername(), body);
+        callback.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
+            public void onResponse(Call<Void> call, Response<Void> response) {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -54,7 +54,7 @@ public class FDScript {
             }
 
             @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
+            public void onFailure(Call<Void> call, Throwable t) {
                 context.runOnUiThread(new Runnable() {
                     @Override
                     public void run() {

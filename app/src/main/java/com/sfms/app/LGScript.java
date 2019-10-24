@@ -30,6 +30,11 @@ public class LGScript implements ILogin {
         return username;
     }
 
+    @Override
+    public void logout() {
+        this.username = "";
+    }
+
     public LGScript(WebView webView, FragmentActivity activity, FeedbackApi api) {
         this.webview = webView;
         this.context = activity;

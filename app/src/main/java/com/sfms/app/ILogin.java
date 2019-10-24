@@ -8,4 +8,5 @@ import java.io.Serializable;
 
 public interface ILogin{
     String getUsername();
+    void logout();
 }

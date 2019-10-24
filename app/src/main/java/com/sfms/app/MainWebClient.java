@@ -64,6 +64,7 @@ public class MainWebClient extends WebViewClient {
         WebResourceResponse response = null;
         switch (request.getUrl().getPath()) {
             case LOGIN_VIEW_URL:
+                this.lg.logout();
                 response = getLoginHtmlResponse();
                 this.currentUrl = LOGIN_VIEW_URL;
                 break;
@@ -107,7 +108,7 @@ public class MainWebClient extends WebViewClient {
         try {
             Response<JsonObject> response = callback.execute();
             rs = gson.toJson(response.body());
-        } catch (IOException e) {
+        } catch (Exception e) {
             rs = "[]";
             e.printStackTrace();
         }
@@ -120,7 +121,7 @@ public class MainWebClient extends WebViewClient {
         try {
             Response<JsonArray> response = callback.execute();
             rs = gson.toJson(response.body());
-        } catch (IOException e) {
+        } catch (Exception e) {
             rs = "[]";
             e.printStackTrace();
         }
@@ -180,7 +181,7 @@ public class MainWebClient extends WebViewClient {
     }
 
     public void back() {
-        if (this.currentUrl.equals(FEED_DETAIL_VIEW_URL)) {
+        if (!this.currentUrl.equals(LOGIN_VIEW_URL)) {
             this.wvDisplay.loadUrl(MainWebClient.LIST_URL);
         }
     }

@@ -16,7 +16,7 @@
 #login-form input {
     display: block;
     margin: 6px 0 5px 2px;
-    width: 100%;
+    width: 90%;
 }
 
 #login-form input {
@@ -25,4 +25,7 @@
 
 #login-form label {
     text-align: left;
+}
+.bgi-login{
+    background-image:url("file:///android_res/raw/students.jpg"),url("students.jpg");
 }
